@@ -1,0 +1,6 @@
+{
+  "username": "test",
+  "phone": {"like": "222"},
+  "logon_count": {"gte": 3},
+  "status": {"in": [0,1]}
+}

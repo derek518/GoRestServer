@@ -1,0 +1,21 @@
+app:
+  runmode:  debug
+  needauth: false
+
+server:
+  listenaddr: '0.0.0.0'
+  port: 8080
+
+database:
+  type: mysql
+  url: '@tcp(127.0.0.1:3306)/trainsystem?charset=utf8mb4&parseTime=True&loc=Local'
+  user: root
+  password: 123456
+  tableprefix: tss_
+  showsql: true
+
+redis:
+  enabled: true
+  host: '127.0.0.1:6379'
+  password: ''
+  expiration: 3600

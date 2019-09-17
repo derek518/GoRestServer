@@ -1,0 +1,634 @@
+basePath: /api
+definitions:
+  base.JsonObject:
+    properties:
+      code:
+        description: '* 状态码: 0: 成功; 1: 异常'
+        type: integer
+      content:
+        description: '* 内容体'
+        type: object
+      message:
+        description: '* 消息'
+        type: string
+    type: object
+  base.PageBean:
+    properties:
+      page:
+        description: '* 当前页'
+        type: integer
+      rows:
+        description: '* 每行的数据'
+        type: object
+      size:
+        description: '* 每页显示的最大行数'
+        type: integer
+      total:
+        description: '* 总记录数'
+        type: integer
+    type: object
+  model_auth.Function:
+    properties:
+      childFunctions:
+        description: '* 子功能'
+        items:
+          $ref: '#/definitions/model_auth.Function'
+        type: array
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      group:
+        description: '* 功能分组'
+        type: string
+      icon:
+        description: '* 图标'
+        type: string
+      id:
+        type: string
+      is_menu:
+        description: '* 是否生成菜单'
+        type: boolean
+      name:
+        description: '* 功能名称'
+        type: string
+      p_id:
+        description: '* 父功能 id'
+        type: string
+      parentFunction:
+        $ref: '#/definitions/model_auth.Function'
+        description: '* 父功能'
+        type: object
+      seq:
+        description: '* 序号'
+        type: integer
+      updated_at:
+        type: string
+      url:
+        description: '* 访问路径'
+        type: string
+    type: object
+  model_auth.Role:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      description:
+        description: '* 角色描述'
+        type: string
+      functions:
+        description: '* 角色关联的功能'
+        items:
+          $ref: '#/definitions/model_auth.Function'
+        type: array
+      id:
+        type: string
+      name:
+        description: '* 角色名称'
+        type: string
+      role_key:
+        description: '* 角色类别标识'
+        type: string
+      updated_at:
+        type: string
+    type: object
+  model_auth.User:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      description:
+        description: '* 电话'
+        type: string
+      id:
+        type: string
+      is_builtin:
+        description: '* 标志 1 表示这个账号是由管理方为商户添加的账号'
+        type: boolean
+      login_time:
+        description: '* 最后一次登陆时间'
+        type: string
+      logon_count:
+        description: '* 登陆次数'
+        type: integer
+      phone:
+        description: '* 电话'
+        type: string
+      role:
+        $ref: '#/definitions/model_auth.Role'
+        description: '* 用户对应的角色'
+        type: object
+      role_id:
+        description: '* 外键'
+        type: string
+      status:
+        description: '* 状态  0 正常'
+        type: integer
+      updated_at:
+        type: string
+      username:
+        description: '* 用户名'
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: zhengsl@nicetech-video.com
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a RestAPI server for train system.
+  license:
+    name: TOPZEN
+  termsOfService: http://swagger.io/terms/
+  title: Train System RestAPI Server
+  version: "1.0"
+paths:
+  /api/auth/delete_function:
+    post:
+      parameters:
+      - description: 功能记录id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.JsonObject'
+      summary: 删除功能信息
+      tags:
+      - FunctionApi
+  /api/auth/delete_role:
+    post:
+      parameters:
+      - description: 角色记录id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.JsonObject'
+      summary: 删除角色信息
+      tags:
+      - RoleApi
+  /api/auth/delete_user:
+    post:
+      parameters:
+      - description: 用户记录id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.JsonObject'
+      summary: 删除用户信息
+      tags:
+      - UserApi
+  /api/auth/get_function:
+    get:
+      parameters:
+      - description: 功能记录id
+        in: query
+        name: id
+        type: string
+      - description: 功能名
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.JsonObject'
+      summary: 获取单个功能信息,传id按id查，传name按功能名称查
+      tags:
+      - FunctionApi
+  /api/auth/get_role:
+    get:
+      parameters:
+      - description: 角色记录id
+        in: query
+        name: id
+        type: string
+      - description: 角色名
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: base.JsonObject中content的内容
+          schema:
+            $ref: '#/definitions/model_auth.Role'
+      summary: 获取单个角色信息,传id按id查，传name按角色名称查
+      tags:
+      - RoleApi
+  /api/auth/get_user:
+    get:
+      parameters:
+      - description: 用户记录id
+        in: query
+        name: id
+        type: string
+      - description: 用户名
+        in: query
+        name: user_name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: base.JsonObject中content的内容
+          schema:
+            $ref: '#/definitions/model_auth.User'
+      summary: 获取单个用户信息,传id按id查，传name按用户名称查
+      tags:
+      - UserApi
+  /api/auth/save_function:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 功能记录id,新增时id为空
+        in: body
+        name: id
+        schema:
+          type: string
+      - description: 功能名称
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: 功能URL
+        in: body
+        name: url
+        required: true
+        schema:
+          type: string
+      - description: HTTP请求类型
+        in: body
+        name: action
+        required: true
+        schema:
+          type: string
+      - description: 是否生成菜单
+        in: body
+        name: is_menu
+        required: true
+        schema:
+          type: boolean
+      - description: 序号
+        in: body
+        name: seq
+        required: true
+        schema:
+          type: integer
+      - description: 图标
+        in: body
+        name: icon
+        required: true
+        schema:
+          type: string
+      - description: 父功能id
+        in: body
+        name: p_id
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.JsonObject'
+      summary: 添加、修改功能信息
+      tags:
+      - FunctionApi
+  /api/auth/save_role:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 角色记录id,新增时id为空
+        in: body
+        name: id
+        schema:
+          type: string
+      - description: 角色名称
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: 角色类别标识
+        in: body
+        name: role_key
+        required: true
+        schema:
+          type: string
+      - description: 角色描述
+        in: body
+        name: description
+        schema:
+          type: string
+      - description: 角色关联的功能
+        in: body
+        name: functions
+        schema:
+          $ref: '#/definitions/model_auth.Function'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.JsonObject'
+      summary: 添加、修改角色信息
+      tags:
+      - RoleApi
+  /api/auth/save_user:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户记录id,新增时id为空
+        in: body
+        name: id
+        schema:
+          type: string
+      - description: 用户名称
+        in: body
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: 用户关联的角色
+        in: body
+        name: role_id
+        required: true
+        schema:
+          type: string
+      - description: 电话号码
+        in: body
+        name: phone
+        required: true
+        schema:
+          type: string
+      - description: 用户描述
+        in: body
+        name: description
+        schema:
+          type: string
+      - description: 是否内置账号
+        in: body
+        name: is_builtin
+        schema:
+          type: boolean
+      - description: 用户登录次数
+        in: body
+        name: logon_count
+        schema:
+          type: string
+      - description: 用户最后一次登录时间
+        in: body
+        name: login_time
+        schema:
+          type: string
+      - description: 用户登录次数
+        in: body
+        name: logon_count
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.JsonObject'
+      summary: 添加、修改用户信息
+      tags:
+      - UserApi
+  /api/get_function_all:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.JsonObject'
+      summary: 获取所有功能信息
+      tags:
+      - FunctionApi
+  /api/get_function_page:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码
+        in: body
+        name: page
+        required: true
+        schema:
+          type: integer
+      - description: 每页显示最大行
+        in: body
+        name: size
+        required: true
+        schema:
+          type: integer
+      - description: 排序
+        in: body
+        name: sort
+        schema:
+          type: string
+      - description: 字段删选
+        in: body
+        name: selection
+        schema:
+          type: string
+      - description: 查询条件(And)
+        in: body
+        name: and_cons
+        schema:
+          $ref: '#/definitions/%7Bobject%7D'
+          type: object
+      - description: 查询条件(Or)
+        in: body
+        name: or_cons
+        schema:
+          $ref: '#/definitions/%7Bobject%7D'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.PageBean'
+      summary: 用户信息分页查询。查询参数为QueryCondition。
+      tags:
+      - FunctionApi
+  /api/get_role_all:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.JsonObject'
+      summary: 获取所有角色信息
+      tags:
+      - RoleApi
+  /api/get_role_page:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码
+        in: body
+        name: page
+        required: true
+        schema:
+          type: integer
+      - description: 每页显示最大行
+        in: body
+        name: size
+        required: true
+        schema:
+          type: integer
+      - description: 排序
+        in: body
+        name: sort
+        schema:
+          type: string
+      - description: 字段删选
+        in: body
+        name: selection
+        schema:
+          type: string
+      - description: 查询条件(And)
+        in: body
+        name: and_cons
+        schema:
+          $ref: '#/definitions/%7Bobject%7D'
+          type: object
+      - description: 查询条件(Or)
+        in: body
+        name: or_cons
+        schema:
+          $ref: '#/definitions/%7Bobject%7D'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.PageBean'
+      summary: 角色信息分页查询；查询参数为QueryCondition。
+      tags:
+      - RoleApi
+  /api/get_user_all:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.JsonObject'
+      summary: 获取所有用户信息
+      tags:
+      - UserApi
+  /api/get_user_page:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码
+        in: body
+        name: page
+        required: true
+        schema:
+          type: integer
+      - description: 每页显示最大行
+        in: body
+        name: size
+        required: true
+        schema:
+          type: integer
+      - description: 排序
+        in: body
+        name: sort
+        schema:
+          type: string
+      - description: 字段删选
+        in: body
+        name: selection
+        schema:
+          type: string
+      - description: 查询条件(And)
+        in: body
+        name: and_cons
+        schema:
+          $ref: '#/definitions/%7Bobject%7D'
+          type: object
+      - description: 查询条件(Or)
+        in: body
+        name: or_cons
+        schema:
+          $ref: '#/definitions/%7Bobject%7D'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base.PageBean'
+      summary: 用户信息分页查询；查询参数为QueryCondition。
+      tags:
+      - UserApi
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
+tags:
+- description: '支持多级表查询，查询条件参考SQL Where中的操作符，包括等于({key: value})、大于({key:{"gt": value})、小于({key:{"lt":
+    value})、大于等于({key:{"gte": value})、小于等于({key:{"lte": value})、between({key:{"between":
+    [value1, value2]})、like({key:{"like": regex})和in({key:{"in": [...]})。'
+  externalDocs:
+    url: https://www.w3schools.com/sql/sql_where.asp
+  name: QueryCondition
